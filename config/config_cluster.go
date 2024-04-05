@@ -19,6 +19,8 @@ type ClusterConfiguration struct {
 
 	MetalLBSharedIP bool `json:"metallb_shared_ip" default:"true" yaml:"metallb_shared_ip"`
 
+	IngressClass string `json:"ingress_class" default:"nginx" yaml:"ingress_class"`
+
 	StorageClass string `json:"storage_class" default:"manual" yaml:"storage_class"`
 
 	Insecure bool `json:"insecure" yaml:"insecure" default:"false"`
