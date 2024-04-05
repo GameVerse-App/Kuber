@@ -634,18 +634,24 @@ func (e *Environment) CreateService() error {
 		},
 	}
 
-	if serviceType == "LoadBalancer" && cfg.Cluster.MetalLBSharedIP {
-		tcp.Annotations = map[string]string{
-			"metallb.universe.tf/allow-shared-ip": e.Id,
-		}
+	if serviceType == "LoadBalancer" {
+		if cfg.Cluster.MetalLBSharedIP {
+			tcp.Annotations = map[string]string{
+				"metallb.universe.tf/allow-shared-ip": e.Id,
+			}
 
-		udp.Annotations = map[string]string{
-			"metallb.universe.tf/allow-shared-ip": e.Id,
-		}
+			udp.Annotations = map[string]string{
+				"metallb.universe.tf/allow-shared-ip": e.Id,
+			}
 
-		if len(cfg.Cluster.MetalLBAddressPool) != 0 {
-			tcp.Annotations["metallb.universe.tf/address-pool"] = cfg.Cluster.MetalLBAddressPool
-			udp.Annotations["metallb.universe.tf/address-pool"] = cfg.Cluster.MetalLBAddressPool
+			if len(cfg.Cluster.MetalLBAddressPool) != 0 {
+				tcp.Annotations["metallb.universe.tf/address-pool"] = cfg.Cluster.MetalLBAddressPool
+				udp.Annotations["metallb.universe.tf/address-pool"] = cfg.Cluster.MetalLBAddressPool
+			}
+		}
+		if cfg.Cluster.IngressClass != "" {
+			tcp.Annotations["kubernetes.io/ingress.class"] = cfg.Cluster.IngressClass
+			udp.Annotations["kubernetes.io/ingress.class"] = cfg.Cluster.IngressClass
 		}
 	}
 
