@@ -50,7 +50,7 @@ jobs:
           echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build and Push (tag)
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         if: "github.event_name == 'release' && github.event.action == 'published'"
         with:
           context: .
@@ -63,7 +63,7 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
 
       - name: Build and Push (develop)
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         if: "github.event_name == 'push' && contains(github.ref, 'develop')"
         with:
           context: .
